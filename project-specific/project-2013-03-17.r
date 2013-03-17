@@ -1,4 +1,6 @@
-selfDir = ""
+selfDir = "/Users/gtan/Repositories/MS/scripts"
+selfScripts = list.files(path=selfDir, pattern='.*\\.r', full.names=TRUE, recursive=TRUE)
+for(rs in selfScripts){message(rs);source(rs)}
 
 dataFn = "dephosphorylation.txt"
 charge = 13
@@ -10,11 +12,23 @@ massOverCharge = inputTable[ ,1]
 mass = massOverCharge * charge - charge
 diffTable = buildCrossDiffTable(mass)
 
-foundFeature = list()
+indexFound = list()
 glycan = names(GLYCANREF)[1]
 for(glycan in names(GLYCANREF)){
-  foundFeature[[glycan]] = which(diffTable >= glycanRange[[glycan]]["min"] & diffTable <= glycanRange[[glycan]]["max"], arr.ind=TRUE)
+  indexFound[[glycan]] = which(diffTable >= glycanRange[[glycan]]["min"] & diffTable <= glycanRange[[glycan]]["max"], arr.ind=TRUE)
 }
 
+massFound = lapply(indexFound, function(indexMatrix){matrix(mass[indexMatrix], ncol=2)})
+massFound = lapply(massFound, function(massMatrix){
+                   massMatrix = cbind(massMatrix, abs(massMatrix[ ,1] - massMatrix[ ,2]));
+                   colnames(massMatrix) = c("rowMass", "colMass", "diffMass");
+                   return(massMatrix)}
+                  )
 
+glycan = names(massFound)[1]
+for(glycan in names(massFound)){
+  massFound[[glycan]] = cbind(massFound[[glycan]], "theoMass"=c(GLYCANREF[[glycan]]))
+  massFound[[glycan]] = cbind(massFound[[glycan]], "devMass"=c(abs(massFound[[glycan]][ ,"theoMass"] - massFound[[glycan]][ ,"diffMass"])))
+
+}
 
