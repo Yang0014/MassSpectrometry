@@ -1,6 +1,9 @@
 selfDir = "/Users/gtan/Repositories/MS/scripts"
 selfScripts = list.files(path=selfDir, pattern='.*\\.r', full.names=TRUE, recursive=TRUE)
 for(rs in selfScripts){message(rs);source(rs)}
+selfDir = "/Users/gtan/Repositories/fgcz-r"
+selfScripts = list.files(path=selfDir, pattern='.*\\.r', full.names=TRUE, recursive=TRUE)
+for(rs in selfScripts){message(rs);source(rs)}
 
 dataFn = "dephosphorylation.txt"
 charge = 13
@@ -31,4 +34,21 @@ for(glycan in names(massFound)){
   massFound[[glycan]] = cbind(massFound[[glycan]], "devMass"=c(abs(massFound[[glycan]][ ,"theoMass"] - massFound[[glycan]][ ,"diffMass"])))
 
 }
+
+## find the evolve path
+startMass = 43846.40
+indexMass = which(mass == startMass)
+evolvePath = solveGlycan(indexMass, indexFound, mass)
+evolvePath[ ,"Glcnac"] = evolvePath[ ,"Glcnac"] + 1
+evolvePath[ ,"Man"] = evolvePath[ ,"Man"] + 4
+evolvePath[ ,"realDiff"] = evolvePath[ ,"realDiff"] + 43846.40 - 42992.65
+evolvePath[ ,"theoDiff"] = evolvePath[ ,"theoDiff"] + 851.75
+evolvePath[ ,"dev"] = abs(evolvePath[ ,"realDiff"] - evolvePath[ ,"theoDiff"])
+
+my.write.table(evolvePath, file="43846.40-evole.txt", sep="\t", col.names=TRUE, row.names=TRUE, quote=FALSE)
+
+
+startMass = 43967.82
+
+
 
