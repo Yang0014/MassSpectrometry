@@ -1,7 +1,7 @@
 selfDir = "/Users/gtan/Repositories/MS/scripts"
 selfScripts = list.files(path=selfDir, pattern='.*\\.r', full.names=TRUE, recursive=TRUE)
 for(rs in selfScripts){message(rs);source(rs)}
-selfDir = "/Users/gtan/Repositories/fgcz-r"
+selfDir = "/Users/gtan/Repositories/NextGenerationSequencing/scripts"
 selfScripts = list.files(path=selfDir, pattern='.*\\.r', full.names=TRUE, recursive=TRUE)
 for(rs in selfScripts){message(rs);source(rs)}
 
