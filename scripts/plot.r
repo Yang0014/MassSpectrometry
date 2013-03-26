@@ -13,7 +13,7 @@ plotPseudoSpectrum = function(x, y, labels=NULL, file="output"){
     lines(xToPlot, yToPlot)
   }
   if(!is.null(labels)){
-    text(x=x, y=y+1, labels=labels, cex=0.5)
+    text(x=x, y=y+1, labels=labels, cex=0.7)
   }
 }
 
