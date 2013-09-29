@@ -1,5 +1,5 @@
 
-readXls = function(xlsFn, sheet="Sheet1", chargeState){
+readProteinDevolutionXls = function(xlsFn, sheet="Sheet1", chargeState){
   wb = loadWorkbook(xlsFn)
   sheetData = readWorksheet(wb, sheet=sheet)
   indexMain = which(!is.na(sheetData[ ,"No.."]))
