@@ -12,6 +12,12 @@ glycanRange = function(glycanref, deviationRate=0.015){
   return(ans)
 }
 
+validateGlyco = function(glycoTable){
+  glycoTable = glycoTable[!glycoTable[["Man"]] < glycoTable[["Neu5Ac"]] + 3, ]
+  rownames(glycoTable) = seq_len(nrow(glycoTable))
+  return(glycoTable)
+}
+
 buildCrossDiffTable = function(inputVector){
   inputVector = as.numeric(inputVector)
   resultTable = matrix(NA, nrow=length(inputVector), ncol=length(inputVector))
@@ -111,8 +117,8 @@ dissectGlycoTable = function(glycoTable, glycos=c("Man"=3)){
   return(glycoTable)
 }
 
-digestGlycoTable = function(glycoTable, glyco="Neu5Ac", chargeState=18){
-  glycosLeft = setdiff(names(GLYCANREF), glyco)
+digestGlycoTable = function(glycoTable, glycos=GLYCANREF, glyco="Neu5Ac", chargeState=18){
+  glycosLeft = setdiff(names(glycos), glyco)
   duplicatedIndex = duplicated(glycoTable[ ,glycosLeft])
   ans = glycoTable[!duplicatedIndex, ]
   toMerge = glycoTable[duplicatedIndex, ]
@@ -124,9 +130,23 @@ digestGlycoTable = function(glycoTable, glyco="Neu5Ac", chargeState=18){
       }
     }
   }
-  ans[["mass"]] = ans[["mass"]] - ans[[glyco]]* GLYCANREF[[glyco]]
+  ans[["mass"]] = ans[["mass"]] - ans[[glyco]]* glycos[[glyco]]
   ans[["Measured Average m/z"]][ans[[glyco]] != 0] = (ans[["mass"]][ans[[glyco]] != 0] + chargeState) / chargeState
   ans = ans[ ,c("mass", glycosLeft, "Sum.Intensity", "Measured Average m/z")]
   return(ans)
 }
 
+digestGal = function(glycoTable, chargeState=18){
+  glyco = "Man"
+  glycoTable[[paste(glyco, "stable2", sep="_")]] = glycoTable[["Neu5Ac"]]
+  glycoTable[[glyco]] = glycoTable[[glyco]] - glycoTable[["Neu5Ac"]]
+  ans = digestGlycoTable(glycoTable, glyco="Man", chargeState=chargeState)
+  return(ans)
+}
+
+digestGalSia = function(glycoTable, glycos=GLYCANREF, chargeState=18){
+  ans = digestGlycoTable(glycoTable, glyco="Neu5Ac", chargeState=chargeState)
+  glycos = glycos[setdiff(names(glycos), "Neu5Ac")]
+  ans = digestGlycoTable(ans, glycos=glycos, glyco="Man", chargeState=chargeState)
+  return(ans)
+}
