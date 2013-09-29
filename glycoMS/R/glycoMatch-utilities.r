@@ -133,6 +133,7 @@ digestGlycoTable = function(glycoTable, glycos=GLYCANREF, glyco="Neu5Ac", charge
   ans[["mass"]] = ans[["mass"]] - ans[[glyco]]* glycos[[glyco]]
   ans[["Measured Average m/z"]][ans[[glyco]] != 0] = (ans[["mass"]][ans[[glyco]] != 0] + chargeState) / chargeState
   ans = ans[ ,c("mass", glycosLeft, "Sum.Intensity", "Measured Average m/z")]
+  ans = ans[order(ans[["mass"]]), ]
   return(ans)
 }
 

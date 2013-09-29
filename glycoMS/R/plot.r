@@ -1,9 +1,8 @@
 
-plotPseudoSpectrum = function(x, y, labels=NULL, file="output"){
+plotPseudoSpectrum = function(x, y, labels=NULL){
   stopifnot(length(x) == length(y))
-  require(monash)
-  savefig(file=file, width=20, height=10)
-  on.exit(dev.off())
+  #savefig(file=file, width=20, height=10)
+  #on.exit(dev.off())
   plot(NA, NA, xlim=range(x), ylim=c(0, 105), type="n", bty="l", 
        yaxs="i", 
        xlab="mass", ylab="Relative abundance")
@@ -14,6 +13,24 @@ plotPseudoSpectrum = function(x, y, labels=NULL, file="output"){
   }
   if(!is.null(labels)){
     text(x=x, y=y+1, labels=labels, cex=0.7)
+  }
+}
+
+plotPseudoGaussianSpectrum = function(x, y, xlim, sd, labels=NULL){
+  stopifnot(length(x) == length(y))
+  plot(NA,NA,
+       xlim=xlim,
+       ylim=c(0, 100),
+       yaxs="i", bty="l",
+       type="n", xlab="mass", ylab="Relative Abundance")
+  plotWidths = diff(x)
+  plotWidths = c(plotWidths[1], plotWidths, plotWidths[length(plotWidths)])
+  for(i in 1:length(x)){
+    plot_x = seq(x[i] - plotWidths[i]/2,
+            x[i] + plotWidths[i+1]/2, by=0.1)
+    plot_y = dnorm(plot_x, mean=x[i], sd=sd)
+    plot_y = y[i] / max(plot_y) * plot_y
+    lines(plot_x, plot_y)
   }
 }
 
