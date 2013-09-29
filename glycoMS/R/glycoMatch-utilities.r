@@ -98,6 +98,7 @@ solveGlycan = function(inputTable, glycanRange, startMass, backBoneMass, startCo
   evolvePath = cbind(evolvePath, 
                      inputTable[as.integer(rownames(evolvePath)), c("Sum.Intensity", "Relative.Abundance", "Measured Average m/z")]
                      )
+  evolvePath = evolvePath[order(evolvePath[["mass"]]), ]
   return(evolvePath)
 }
 
