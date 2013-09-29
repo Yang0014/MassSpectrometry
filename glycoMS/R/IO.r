@@ -18,6 +18,8 @@ readProteinDevolutionXls = function(xlsFn, sheet="Sheet1", chargeState){
   measuredAverage = sheetData[indexChargeState, "Sum.Intensity"]
   stopifnot(length(measuredAverage) == nrow(resultSheet))
   resultSheet = cbind(resultSheet, "Measured Average m/z"=as.numeric(measuredAverage))
+  resultSheet = as.data.frame(data.matrix(resultSheet))
+  resultSheet = resultSheet[order(resultSheet[["Average.Mass"]]), ]
   return(resultSheet)
 }
 
