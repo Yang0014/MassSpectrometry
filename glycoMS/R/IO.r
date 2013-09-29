@@ -1,6 +1,5 @@
 
 readXls = function(xlsFn, sheet="Sheet1", chargeState){
-  require(XLConnect)
   wb = loadWorkbook(xlsFn)
   sheetData = readWorksheet(wb, sheet=sheet)
   indexMain = which(!is.na(sheetData[ ,"No.."]))
