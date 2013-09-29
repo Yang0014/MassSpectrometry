@@ -99,6 +99,20 @@ solveGlycan = function(inputTable, glycanRange, startMass, backBoneMass, startCo
                      inputTable[as.integer(rownames(evolvePath)), c("Sum.Intensity", "Relative.Abundance", "Measured Average m/z")]
                      )
   evolvePath = evolvePath[order(evolvePath[["mass"]]), ]
+  rownames(evolvePath) = seq_len(nrow(evolvePath))
   return(evolvePath)
+}
+
+dissectGlycoTable = function(glycoTable, glycos=c("Man"=3)){
+  for(glyco in names(glycos)){
+    glycoTable[[paste(glyco, "stable", sep="_")]] = glycos[glyco]
+    glycoTable[[glyco]] = glycoTable[[glyco]] - glycos[glyco]
+  }
+  return(glycoTable)
+}
+
+digestGlycoTable = function(glycoTable, glyco="Neu5Ac"){
+  
+
 }
 
