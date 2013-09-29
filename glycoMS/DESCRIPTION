@@ -1,0 +1,14 @@
+Package: glycoMS
+Version: 0.99.0
+Date: 2013-09-29
+Title: Tools for glyco Native Mass Spectrometry analysis.
+Description: Tools for glyco Native Mass Spectrometry analysis.
+Author: Yang Yang <y.yang2@uu.nl>
+Maintainer: Yang Yang <y.yang2@uu.nl>
+Depends: R (>= 2.15.2), XLConnect (>= 0.2-5)
+Suggests:
+License: GPL (>= 2)
+URL: 
+Type: Package
+NeedsCompilation: no
+LazyData: yes
