@@ -111,8 +111,22 @@ dissectGlycoTable = function(glycoTable, glycos=c("Man"=3)){
   return(glycoTable)
 }
 
-digestGlycoTable = function(glycoTable, glyco="Neu5Ac"){
-  
-
+digestGlycoTable = function(glycoTable, glyco="Neu5Ac", chargeState=18){
+  glycosLeft = setdiff(names(GLYCANREF), glyco)
+  duplicatedIndex = duplicated(glycoTable[ ,glycosLeft])
+  ans = glycoTable[!duplicatedIndex, ]
+  toMerge = glycoTable[duplicatedIndex, ]
+  for(i in 1:nrow(toMerge)){
+    for(j in 1:nrow(ans)){
+      if(paste(toMerge[i, glycosLeft], collapse="-") == paste(ans[j, glycosLeft], collapse="-")){
+        message("merge ", i, " ", j)
+        ans[j, "Sum.Intensity"] = ans[j, "Sum.Intensity"] + toMerge[i, "Sum.Intensity"]
+      }
+    }
+  }
+  ans[["mass"]] = ans[["mass"]] - ans[[glyco]]* GLYCANREF[[glyco]]
+  ans[["Measured Average m/z"]][ans[[glyco]] != 0] = (ans[["mass"]][ans[[glyco]] != 0] + chargeState) / chargeState
+  ans = ans[ ,c("mass", glycosLeft, "Sum.Intensity", "Measured Average m/z")]
+  return(ans)
 }
 
