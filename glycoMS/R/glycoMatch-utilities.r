@@ -32,7 +32,7 @@ solveCombination = function(startMass, currentMass, weightList){
   
 }
 
-evolveGlycan = function(indexMass, indexFound, mass){
+evolveGlycan = function(indexMass, indexFound, mass, glycoMass){
   evolvePath = matrix(0, ncol=length(indexFound), dimnames=list(indexMass, names(indexFound)))
   isFound = TRUE
   i = 1
@@ -63,14 +63,13 @@ evolveGlycan = function(indexMass, indexFound, mass){
     i = i + 1
   }
   evolvePath = cbind(evolvePath, "realDiff"=mass[as.integer(rownames(evolvePath))] - mass[indexMass])
-  evolvePath = cbind(evolvePath, "theoDiff"=c(evolvePath[ ,names(indexFound)]%*%unlist(GLYCANREF)[names(indexFound)]))
+  evolvePath = cbind(evolvePath, "theoDiff"=c(evolvePath[ ,names(indexFound)]%*%unlist(glycoMass)[names(indexFound)]))
   evolvePath = cbind(evolvePath, "dev"=c(abs(evolvePath[, "realDiff"] - evolvePath[ , "theoDiff"])))
   
 }
 
 
-solveGlycan = function(inputTable, glycanRange, startMass, backBoneMass, startComposition=c("Glcnac"=4, "Man"=3, "Fuc"=1, "NGNA"=0, "NANA"=0)){
-  mass = inputTable[ ,2]
+solveGlycan = function(mass, glycanRange, startMass, backBoneMass, startComposition=c("Glcnac"=4, "Man"=3, "Fuc"=1, "NGNA"=0, "NANA"=0)){
   diffTable = buildCrossDiffTable(mass)
   indexFound = list()
   for(glycan in names(glycanRange)){
@@ -84,27 +83,27 @@ solveGlycan = function(inputTable, glycanRange, startMass, backBoneMass, startCo
                     )
   for(glycan in names(massFound)){
     massFound[[glycan]] = cbind(massFound[[glycan]], 
-                                "theoMass"=c(GLYCANREF[[glycan]]))
+                                "theoMass"=c(glycoMass[[glycan]]))
     massFound[[glycan]] = cbind(massFound[[glycan]], 
                                 "devMass"=c(abs(massFound[[glycan]][ ,"theoMass"] - massFound[[glycan]][ ,"diffMass"])))
   }
   indexMass = which(mass == startMass)
   stopifnot(length(indexMass) != 0)
-  evolvePath = evolveGlycan(indexMass, indexFound, mass)
+  evolvePath = evolveGlycan(indexMass, indexFound, mass, glycoMass)
   evolvePath[ , names(startComposition)] = sweep(
                                                  evolvePath[ , names(startComposition)],  
                                                  MARGIN=2, startComposition, "+"
                                                  )
   evolvePath[ ,"realDiff"] = evolvePath[ ,"realDiff"] + startMass - backBoneMass
   evolvePath[ ,"theoDiff"] = evolvePath[ ,"theoDiff"] + 
-                             sum(startComposition * unlist(GLYCANREF))
+                             sum(startComposition * unlist(glycoMass))
   evolvePath[ ,"dev"] = abs(evolvePath[ ,"realDiff"] - evolvePath[ ,"theoDiff"])
   evolvePath = cbind("mass"=mass[as.integer(rownames(evolvePath))], evolvePath)
   #my.write.table(evolvePath, file="43846.40-evole.txt", sep="\t", col.names=TRUE, row.names=TRUE, quote=FALSE)
-  evolvePath = cbind(evolvePath, 
-                     inputTable[as.integer(rownames(evolvePath)), c("Sum.Intensity", "Relative.Abundance", "Measured Average m/z")]
-                     )
-  evolvePath = evolvePath[order(evolvePath[["mass"]]), ]
+  #evolvePath = cbind(evolvePath, 
+  #                   inputTable[as.integer(rownames(evolvePath)), c("Sum.Intensity", "Relative.Abundance", "Measured Average m/z")]
+  #                   )
+  evolvePath = evolvePath[order(evolvePath[ ,"mass"]), ]
   rownames(evolvePath) = seq_len(nrow(evolvePath))
   return(evolvePath)
 }
