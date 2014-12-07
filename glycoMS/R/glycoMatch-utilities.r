@@ -96,15 +96,15 @@ solveGlycan = function(mass, glycanRange, startMass, backBoneMass, startComposit
                                                  )
   evolvePath[ ,"realDiff"] = evolvePath[ ,"realDiff"] + startMass - backBoneMass
   evolvePath[ ,"theoDiff"] = evolvePath[ ,"theoDiff"] + 
-                             sum(startComposition * unlist(glycoMass))
+                             sum(startComposition * glycoMass[names(startComposition)])
   evolvePath[ ,"dev"] = abs(evolvePath[ ,"realDiff"] - evolvePath[ ,"theoDiff"])
   evolvePath = cbind("mass"=mass[as.integer(rownames(evolvePath))], evolvePath)
   #my.write.table(evolvePath, file="43846.40-evole.txt", sep="\t", col.names=TRUE, row.names=TRUE, quote=FALSE)
   #evolvePath = cbind(evolvePath, 
   #                   inputTable[as.integer(rownames(evolvePath)), c("Sum.Intensity", "Relative.Abundance", "Measured Average m/z")]
   #                   )
-  evolvePath = evolvePath[order(evolvePath[ ,"mass"]), ]
-  rownames(evolvePath) = seq_len(nrow(evolvePath))
+  #evolvePath = evolvePath[order(evolvePath[ ,"mass"]), ]
+  #rownames(evolvePath) = seq_len(nrow(evolvePath))
   return(evolvePath)
 }
 
