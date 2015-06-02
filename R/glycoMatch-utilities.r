@@ -33,6 +33,7 @@ solveCombination = function(startMass, currentMass, weightList){
 }
 
 evolveGlycan = function(indexMass, indexFound, mass, glycoMass){
+  ## search Forward
   evolvePath = matrix(0, ncol=length(indexFound), dimnames=list(indexMass, names(indexFound)))
   isFound = TRUE
   i = 1
@@ -56,12 +57,46 @@ evolveGlycan = function(indexMass, indexFound, mass, glycoMass){
       }
       message("indexToAdd: ", indexToAdd)
       rowToAdd = evolvePath[indexCurrent, ]
-      rowToAdd[glycan] = rowToAdd[glycan] + 1
+      rowToAdd[glycan] = rowToAdd[glycan] + 1L
       evolvePath = rbind(evolvePath, rowToAdd)
       rownames(evolvePath)[nrow(evolvePath)] = indexToAdd
     }
     i = i + 1
   }
+  ans <- evolvePath
+  ## search Backward
+  evolvePath = matrix(0, ncol=length(indexFound), dimnames=list(indexMass, names(indexFound)))
+  isFound = TRUE
+  i = 1
+  while(isFound){
+    message("i ", i)
+    if(i > nrow(evolvePath)){
+      break
+    }
+    #isFound = FALSE
+    indexCurrent = rownames(evolvePath)[i]
+    message("indexCurrent: ", indexCurrent)
+    for(glycan in names(indexFound)){
+      index = indexFound[[glycan]][ ,"col"] == indexCurrent
+      if(!any(index)){
+        next
+      }
+     # isFound = TRUE
+      indexToAdd = indexFound[[glycan]][index,"row"]
+      if(as.character(indexToAdd) %in% rownames(evolvePath)){
+        next
+      }
+      message("indexToAdd: ", indexToAdd)
+      rowToAdd = evolvePath[indexCurrent, ]
+      rowToAdd[glycan] = rowToAdd[glycan] - 1L
+      evolvePath = rbind(evolvePath, rowToAdd)
+      rownames(evolvePath)[nrow(evolvePath)] = indexToAdd
+    }
+    i = i + 1
+  }
+  evolvePath <- evolvePath[-1, , drop=FALSE]
+  evolvePath <- evolvePath[nrow(evolvePath):1, , drop=FALSE]
+  evolvePath <- rbind(evolvePath, ans)
   evolvePath = cbind(evolvePath, "realDiff"=mass[as.integer(rownames(evolvePath))] - mass[indexMass])
   evolvePath = cbind(evolvePath, "theoDiff"=c(evolvePath[ ,names(indexFound)]%*%unlist(glycoMass)[names(indexFound)]))
   evolvePath = cbind(evolvePath, "dev"=c(abs(evolvePath[, "realDiff"] - evolvePath[ , "theoDiff"])))
