@@ -48,7 +48,7 @@ generatePseudoGaussianSpectrum <- function(x, y, sd=5L, xlim=range(x), step=1L){
     plot_y <- y[i] / max(plot_y) * plot_y
     ans_y <- pmax(ans_y, plot_y, na.rm=TRUE)
   }
-  return(list(x=plot_x, y=ans_y))
+  return(data.frame(x=plot_x, y=ans_y))
 }
 
 

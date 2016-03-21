@@ -38,7 +38,7 @@
   as mean, \code{y} as the height, \code{sd} as the standard deviation.
 }
 \value{
-  A \code{list} of x values and y values for plotting the spectrum.
+  A \code{data.frame} of x values and y values for plotting the spectrum.
 }
 
 \author{
