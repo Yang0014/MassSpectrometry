@@ -1,7 +1,7 @@
 Package: glycoMS
 Version: 0.99.0
 Date: 2016-03-21
-Title: Tools for glyco Native Mass Spectrometry analysis.
+Title: Tools for Glyco Native Mass Spectrometry Analysis
 Description: Tools for glyco Native Mass Spectrometry analysis.
 Author: Yang Yang <y.yang2@uu.nl>
 Maintainer: Yang Yang <y.yang2@uu.nl>

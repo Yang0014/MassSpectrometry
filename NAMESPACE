@@ -1,4 +1,19 @@
 ### -----------------------------------------------------------------
+### Import S4 methods defined in other packages
+###
+importMethodsFrom(XLConnect, readWorksheet)
+
+### -----------------------------------------------------------------
+### Import ordinary functions, variables in other packages
+###
+importFrom(XLConnect, loadWorkbook)
+importFrom("graphics", "layout", "lines", "plot", "text")
+importFrom("stats", "dnorm", "end", "start")
+importFrom("utils", "write.table")
+
+  
+
+### -----------------------------------------------------------------
 ### Export non-generic functions
 ###
 export(

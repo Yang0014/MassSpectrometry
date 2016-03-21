@@ -34,16 +34,21 @@ plotPseudoGaussianSpectrum = function(x, y, xlim, sd, labels=NULL){
   }
 }
 
-generatePseudoGaussianSpectrum = function(x, y, sd, xlim, labels=NULL){
+### -----------------------------------------------------------------
+### generatePseudoGaussianSpectrum: given x-coordinates of mass or m/z, 
+### and the y of peak intensities, it generates the points of gaussian distributsions
+### around the peaks for ploting the spectrum.
+### Exported!
+generatePseudoGaussianSpectrum <- function(x, y, sd=5L, xlim=range(x), step=1L){
   stopifnot(length(x) == length(y))
-  plot_x <- seq(xlim[1], xlim[2], by=1)
+  plot_x <- seq(xlim[1], xlim[2], by=step)
   ans_y <- numeric(length(plot_x))
   for(i in 1:length(x)){
     plot_y <- dnorm(plot_x, mean=x[i], sd=sd)
     plot_y <- y[i] / max(plot_y) * plot_y
     ans_y <- pmax(ans_y, plot_y, na.rm=TRUE)
   }
-  return(list(plot_x, ans_y))
+  return(list(x=plot_x, y=ans_y))
 }
 
 

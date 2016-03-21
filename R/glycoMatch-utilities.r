@@ -104,7 +104,7 @@ evolveGlycan = function(indexMass, indexFound, mass, glycoMass){
 }
 
 
-solveGlycan = function(mass, glycanRange, startMass, backBoneMass, startComposition=c("Glcnac"=4, "Man"=3, "Fuc"=1, "NGNA"=0, "NANA"=0)){
+solveGlycan = function(mass, glycanRange, startMass, backBoneMass, startComposition=c("Glcnac"=4, "Man"=3, "Fuc"=1, "NGNA"=0, "NANA"=0), glycoMass){
   diffTable = buildCrossDiffTable(mass)
   indexFound = list()
   for(glycan in names(glycanRange)){
