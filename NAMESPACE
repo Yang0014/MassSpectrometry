@@ -1,4 +1,7 @@
-
-import(XLConnect)
-
-exportPattern("^[^\\.]")
+### -----------------------------------------------------------------
+### Export non-generic functions
+###
+export(
+  # plotSpectrum.R
+  generatePseudoGaussianSpectrum
+)
