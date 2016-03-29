@@ -1,12 +1,12 @@
 Package: MassSpectrometry
-Version: 0.99.0
-Date: 2016-03-21
+Version: 1.0.0
+Date: 2016-03-29
 Title: Tools for Glyco Native Mass Spectrometry Analysis
 Description: Tools for glyco Native Mass Spectrometry analysis.
 Author: Yang Yang <y.yang2@uu.nl>
 Maintainer: Yang Yang <y.yang2@uu.nl>
 Depends: R (>= 3.2.2)
-Imports: XLConnect (>= 0.2-5)
+Imports: readxl (>= 0.1.1)
 Suggests: knitr,
           rmarkdown,
           testthat

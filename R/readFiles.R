@@ -1,7 +1,6 @@
 
 readProteinDevolutionXls = function(xlsFn, sheet="Sheet1", chargeState){
-  wb = loadWorkbook(xlsFn)
-  sheetData = readWorksheet(wb, sheet=sheet)
+  sheetData <- read_excel(xlsFn, sheet = sheet)
   indexMain = which(!is.na(sheetData[ ,"No.."]))
   resultSheet = sheetData[indexMain, ]
   #indexChargeState = which(sheetData[ ,"Average.Mass"] == chargeState)
