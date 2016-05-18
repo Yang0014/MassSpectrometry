@@ -1,0 +1,24 @@
+---
+title: "Summary of available functionality in this package"
+author: "Yang Yang"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Summary of available functionality in this package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+This vignette shows the available functionality in this package and
+gives a minial demo.
+
+## Read the files
+
+## Spectra normalisation
+
+## SessionInfo()
+```{R sessionInfo, echo=TRUE, eval=TRUE}
+sessionInfo()
+```
