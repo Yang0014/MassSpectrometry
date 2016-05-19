@@ -5,3 +5,12 @@ test_that("test_normaliseSpectrum", {
   expect_equal(sum(normaliseSpectrum(x, method="unit")^2), 1)
 }
 )
+
+test_that("test_geometricMF", {
+  a <- c(1, 10, 5, 8)
+  b <- c(2, 10, 5, 8)
+  c <- c(1, 10, 5, 9)
+  expect_equal(geometricMF(a, b), 0.9948658, tolerance=1e-7)
+  expect_equal(geometricMF(a, c), 0.996804, tolerance=1e-7)
+}
+)

@@ -20,5 +20,6 @@ export(
   generatePseudoGaussianSpectrum,
   
   # spectrum-utils.R
-  normaliseSpectrum
+  normaliseSpectrum,
+  geometricMF
 )

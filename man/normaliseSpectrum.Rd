@@ -38,7 +38,7 @@
   Rasmussen, G.T., and Isenhour, T.L. (1979). The Evaluation of Mass Spectral Search Algorithms. J. Chem. Inf. Comput. Sci. 19, 179-186.
 }
 \author{
-  Ge Tan
+  Yang Yang
 }
 
 \examples{

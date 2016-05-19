@@ -46,6 +46,31 @@ normaliseSpectrum(x, method="max")
 normaliseSpectrum(x, method="unit")
 ```
 
+## Spectra similarity
+### Euclidean geometric distance matching factor
+This metric measures the geometric distance between two spectra.
+The component of each spectrum is normalised into the unit length.
+Then the normalised vector of spectrum can be considered as a single point 
+a sphere with unit radius in a hyperspace of $n$ dimensions, 
+where $n$ is the number of components of the vector.
+Two closer spectra will result in smaller geometric distance [@alfassi_normalization_2004].
+  
+The inverse of the geometric distance plus 1 is returned in this function,
+as a measure of the similarity of two spectra. 
+The similarity score of two spectra between 0.5 and 1.
+1 means perfect identification and 0.5 means the most dissimilarity.
+This measurement is one to one correlated with cosine similarity.
+
+$$ MF_g = \frac{1}{1 + \sum(\frac{u_i}{\sqrt{\sum{u_i^2}}} - \frac{s_i}{\sqrt{\sum{s_i^2}}})^2}$$
+
+```{R geometricMF, echo=TRUE, eval=TRUE}
+a <- c(1, 10, 5, 8)
+b <- c(2, 10, 5, 8)
+c <- c(1, 10, 5, 9)
+geometricMF(a, b)
+geometricMF(a, c)
+geometricMF(b, c)
+```
 
 ## SessionInfo()
 ```{R sessionInfo, echo=TRUE, eval=TRUE}
