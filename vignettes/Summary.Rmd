@@ -9,16 +9,47 @@ vignette: >
   %\VignetteIndexEntry{Summary of available functionality in this package}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+bibliography: Summary.bib
 ---
 
 This vignette shows the available functionality in this package and
 gives a minial demo.
 
+```{r, echo = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+```{R, eval=TRUE, echo=TRUE}
+# Load the package
+library(MassSpectrometry)
+```
+
 ## Read the files
 
-## Spectra normalisation
+## Spectrum processing
+### Spectrum normalisation
+We have `normaliseSpectrum` to do spectrum normalisation with three methods.
+
+  * "sum": $$I_j = \frac{I_j}{\sum_j^n I_j}$$
+  * "max": $$I_j = \frac{I_j}{\max_j^n I_j} $$
+  * "unit": $$I_j = \frac{I_j}{\sqrt{\sum_j^n{I_j^2}}}$$
+
+
+[@rasmussen_evaluation_1979] studied these three normalisation methods and
+they found that all the normalization methods and search methods 
+gave similar results, although the "sum" method seems the to be best normalization method.
+  
+```{R spectrumNormalisation, echo=TRUE, eval=TRUE}
+x <- c(50,100,10,200)
+normaliseSpectrum(x, method="sum")
+normaliseSpectrum(x, method="max")
+normaliseSpectrum(x, method="unit")
+```
+
 
 ## SessionInfo()
 ```{R sessionInfo, echo=TRUE, eval=TRUE}
 sessionInfo()
 ```
+
+# References

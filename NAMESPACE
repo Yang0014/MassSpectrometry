@@ -17,5 +17,8 @@ importFrom("utils", "write.table")
 ###
 export(
   # plotSpectrum.R
-  generatePseudoGaussianSpectrum
+  generatePseudoGaussianSpectrum,
+  
+  # spectrum-utils.R
+  normaliseSpectrum
 )
