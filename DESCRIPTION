@@ -1,6 +1,6 @@
 Package: MassSpectrometry
-Version: 1.0.2
-Date: 2016-05-19
+Version: 1.0.3
+Date: 2016-06-13
 Title: Tools for Glyco Native Mass Spectrometry Analysis
 Description: Tools for glyco Native Mass Spectrometry analysis.
 Author: Yang Yang <y.yang2@uu.nl>
