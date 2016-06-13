@@ -25,6 +25,22 @@ library(MassSpectrometry)
 ```
 
 ## Read the files
+## Read the `mzXML` files
+`mzXML` file is a common mass spectrometry data format.
+
+```{R mzXML, eval=TRUE, echo=TRUE}
+mzFns <- system.file(c("threonine/threonine_i2_e35_pH_tree.mzXML",
+                       "lockmass/LockMass_test.mzXML"),
+                     package = "msdata")
+
+## Read all the mzXML data
+allIntensities <- readMZ(mzFns)
+
+## Read the peaks data within certain ragnges
+starts <- c(50, 70, 80)
+ends <- c(55, 75, 85)
+rangedIntensities <- readMZ(mzFns, starts=starts, ends=ends)
+```
 
 ## Spectrum processing
 ### Spectrum normalisation

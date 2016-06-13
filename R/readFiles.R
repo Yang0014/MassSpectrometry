@@ -1,3 +1,37 @@
+### -----------------------------------------------------------------
+### readMZ: read data from mz files
+### Exported!
+readMZ <- function(fns, scanCounts=NULL, starts=NULL, ends=NULL){
+  if(is.null(scanCounts)){
+    scanCounts <- sapply(fns, function(x){runInfo(openMSfile(x))$scanCount})
+    if(length(unique(scanCounts)) > 1L){
+      warning("Using different scanCounts number in files!")
+    }
+  }else{
+    stopifnot(length(fns) == length(scanCounts))
+  }
+  pls <- mapply(function(x,y){
+    aa <- openMSfile(x)
+    ans <- peaks(aa, y)
+  }, fns, scanCounts)
+  
+  ## Merge the peaks witin the start and end ranges
+  if(!is.null(starts) && !is.null(ends)){
+    stopifnot(length(starts) == length(ends))
+    stopifnot(all(starts < ends))
+    intensities <- matrix(nrow=length(pls), ncol=length(starts),
+                          dimnames=list(names(pls), (starts+ends)/2))
+    for(i in 1:length(pls)){
+      pl <- pls[[i]]
+      pl[ ,2] <- pl[ ,2] / max(pl[ ,2]) * 100
+      intensities[i, ] <- mapply(function(start, end, pl)
+        {sum(pl[pl[ ,1] >= start & pl[ ,1] <= end, 2])}, starts, ends,
+        MoreArgs=list(pl))
+    }
+    return(as.data.frame(intensities))
+  }
+  return(pls)
+}
 
 readProteinDevolutionXls = function(xlsFn, sheet="Sheet1", chargeState){
   sheetData <- read_excel(xlsFn, sheet = sheet)
